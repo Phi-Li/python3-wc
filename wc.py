@@ -108,9 +108,7 @@ def wc(fd, file_x, fstatus, current_pos):
     count_opt['count_chars'] = False
     count_opt['count_complicated'] = print_opt['print_words'] or print_opt['print_linelength']
     string = fd.read()
-    counts['total_bytes'] = counter['bytes']
-    counts['total_words'] = counter['words']
-    counts['total_lines'] = counter['lines']
+    counts['total_bytes'] = len(string)
 
     return ok
 
