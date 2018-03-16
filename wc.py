@@ -1,5 +1,6 @@
 import getopt
 import os
+from re import split
 from sys import exit, argv, stdin
 import dep
 
@@ -109,6 +110,9 @@ def wc(fd, file_x, fstatus, current_pos):
     count_opt['count_complicated'] = print_opt['print_words'] or print_opt['print_linelength']
     string = fd.read()
     counts['total_bytes'] = len(string)
+    token_list = split(r"[\s,]+", string)
+    print(token_list)
+    counts['total_words'] = len(token_list)
     counts['total_lines'] = len(string.split('\n'))
 
     return ok
