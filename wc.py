@@ -16,6 +16,12 @@ counts = {
     'max_line_length' : 0
 }
 
+ccounts = {
+    'slot': 0,
+    'blank': 0,
+    'comment': 0
+}
+
 print_opt = {
     'print_lines' : False,
     'print_words' : False,
@@ -119,6 +125,35 @@ def wc(fd, file_x, fstatus, current_pos, li):
 
     return ok
 
+def cc(fd):
+    comment = string = code = False
+    for l in fd.readlines():
+        l = l.strip().replace('{', '').replace('}', '').replace(';', '')
+        if not comment and not l:
+            ccounts['blank'] = ccounts['blank'] + 1
+            continue
+        if l.replace('/', '').replace('*', ''):
+            ccounts['slot'] = ccounts['slot'] + 1
+        elif comment:
+            ccounts['comment'] = ccounts['comment'] + 1
+        l = ' ' + l + ' '
+        for i in range(1, len(l)):
+            if l[i] == '"' and l[i - 1] != '\\':
+                string = not string
+            if not string:
+                if not comment and l[i] == '/' and l[i + 1] == '/':
+                    if not l[:i].split():
+                        ccounts['blank'] = ccounts['blank'] + 1
+                    ccounts['comment'] = ccounts['comment'] + 1
+                    break
+                if not comment and l[i] == '/' and l[i + 1] == '*':
+                    comment = True
+                    ccounts['comment'] = ccounts['comment'] + 1
+                    i = i + 1
+                if l[i] == '*' and l[i + 1] == '/':
+                    comment = False
+                    i = i + 1
+
 def wc_file(file, fstatus):
     if not file or file == "-":
         have_read_stdin = True
@@ -153,7 +188,7 @@ def main():
     files_from = None
 
     try:
-        opts, args = getopt.gnu_getopt(argv[1:], "clLmwe:", longopts)
+        opts, args = getopt.gnu_getopt(argv[1:], "clLmwae:", longopts)
     except getopt.GetoptError as err:
         print(err)
         usage(dep.EXIT_FAILURE)
@@ -178,9 +213,12 @@ def main():
         # else:
         #     usage(dep.EXIT_FAILURE)
 
+    count_c = False
     stop_token_list = []
     for opt, arg in opts:
-        if opt == "-e":
+        if opt == "-a":
+            count_c = True
+        elif opt == "-e":
             stoplist = open(arg)
             stop_token_list = stoplist.read().split()
             stoplist.close()
@@ -194,6 +232,8 @@ def main():
         pass
     elif os.path.exists(args[0]):
         fd = open(args[0])
+        if count_c:
+            cc(fd)
         wc(fd, args[0], None, 0, stop_token_list)
         fd.close()
 
