@@ -234,6 +234,7 @@ def main():
         fd = open(args[0])
         if count_c:
             cc(fd)
+            fd.seek(0)
         wc(fd, args[0], None, 0, stop_token_list)
         fd.close()
 
