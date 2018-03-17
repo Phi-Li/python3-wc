@@ -90,7 +90,7 @@ def write_counts(lines, words, chars, bytes, linelength, file):
     if file:
         pass
 
-def wc(fd, file_x, fstatus, current_pos):
+def wc(fd, file_x, fstatus, current_pos, li):
     ok = True
     counter = {
         'lines': 0,
@@ -111,6 +111,8 @@ def wc(fd, file_x, fstatus, current_pos):
     string = fd.read()
     counts['total_bytes'] = len(string)
     token_list = split(r"[\s,]+", string)
+    if li:
+        token_list = list(filter(lambda t: not (t in li), token_list))
     print(token_list)
     counts['total_words'] = len(token_list)
     counts['total_lines'] = len(string.split('\n'))
@@ -151,7 +153,7 @@ def main():
     files_from = None
 
     try:
-        opts, args = getopt.gnu_getopt(argv[1:], "clLmw", longopts)
+        opts, args = getopt.gnu_getopt(argv[1:], "clLmwe:", longopts)
     except getopt.GetoptError as err:
         print(err)
         usage(dep.EXIT_FAILURE)
@@ -176,6 +178,13 @@ def main():
         else:
             usage(dep.EXIT_FAILURE)
 
+    stop_token_list = []
+    for opt, arg in opts:
+        if opt == "-e":
+            stoplist = open(arg)
+            stop_token_list = stoplist.read().split()
+            stoplist.close()
+
     if not (print_opt['print_lines'] or print_opt['print_words'] or print_opt['print_chars'] or print_opt['print_bytes'] or print_opt['print_linelength']):
         print_opt['print_lines'] = True
         print_opt['print_words'] = True
@@ -185,7 +194,7 @@ def main():
         pass
     elif os.path.exists(args[0]):
         fd = open(args[0])
-        wc(fd, args[0], None, 0)
+        wc(fd, args[0], None, 0, stop_token_list)
         fd.close()
 
     write_counts(None, None, None, None, None, args[0])
