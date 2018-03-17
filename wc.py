@@ -175,8 +175,8 @@ def main():
             files_from = arg
         elif opt == "--help":
             usage(dep.EXIT_SUCCESS)
-        else:
-            usage(dep.EXIT_FAILURE)
+        # else:
+        #     usage(dep.EXIT_FAILURE)
 
     stop_token_list = []
     for opt, arg in opts:
@@ -186,9 +186,9 @@ def main():
             stoplist.close()
 
     if not (print_opt['print_lines'] or print_opt['print_words'] or print_opt['print_chars'] or print_opt['print_bytes'] or print_opt['print_linelength']):
-        print_opt['print_lines'] = True
-        print_opt['print_words'] = True
-        print_opt['print_bytes'] = True
+        print_opt['print_lines'] = False
+        print_opt['print_words'] = False
+        print_opt['print_bytes'] = False
 
     if os.path.isdir(args[0]):
         pass
