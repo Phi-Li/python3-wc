@@ -188,7 +188,7 @@ def main():
     files_from = None
 
     try:
-        opts, args = getopt.gnu_getopt(argv[1:], "clLmwae:", longopts)
+        opts, args = getopt.gnu_getopt(argv[1:], "clLmwao:e:", longopts)
     except getopt.GetoptError as err:
         print(err)
         usage(dep.EXIT_FAILURE)
@@ -214,10 +214,13 @@ def main():
         #     usage(dep.EXIT_FAILURE)
 
     count_c = False
+    output_file = "result.txt"
     stop_token_list = []
     for opt, arg in opts:
         if opt == "-a":
             count_c = True
+        elif opt == "-o":
+            output_file = arg
         elif opt == "-e":
             stoplist = open(arg)
             stop_token_list = stoplist.read().split()
