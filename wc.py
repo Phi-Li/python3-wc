@@ -82,19 +82,24 @@ def usage(status):
 def write_counts(lines, words, chars, bytes, linelength, file):
     format_sp_int = " %*s"
     format_int = 1
+    s = ""
 
     if print_opt['print_lines']:
-        pass
+        s = s + "Total lines: " + str(counts['total_lines']) + "\n"
     if print_opt['print_words']:
-        pass
+        s = s + "Total words: " + str(counts['total_words']) + "\n"
     if print_opt['print_chars']:
-        pass
+        s = s + "Total chars: " + str(counts['total_chars']) + "\n"
     if print_opt['print_bytes']:
-        pass
+        s = s + "Total bytes: " + str(counts['total_bytes']) + "\n"
     if print_opt['print_linelength']:
         pass
     if file:
-        pass
+        s = s + file
+
+    output = open(file, "w+")
+    output.write(s)
+    output.close()
 
 def wc(fd, file_x, fstatus, current_pos, li):
     ok = True
@@ -241,7 +246,7 @@ def main():
         wc(fd, args[0], None, 0, stop_token_list)
         fd.close()
 
-    write_counts(None, None, None, None, None, args[0])
+    write_counts(None, None, None, None, None, output_file)
 
     read_tokens = False
 
