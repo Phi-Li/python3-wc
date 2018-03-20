@@ -17,7 +17,7 @@ counts = {
 }
 
 ccounts = {
-    'slot': 0,
+    'sloc': 0,
     'blank': 0,
     'comment': 0
 }
@@ -98,7 +98,7 @@ def write_counts(lines, words, chars, bytes, linelength, file, foutput, cc):
     #     s = s + file
 
     if cc:
-        s = s + file + ", " + "代码行/空行/注释行: " + str(ccounts['slot']) + "/" + str(ccounts['blank']) + "/" + str(ccounts['comment']) + "\n"
+        s = s + file + ", " + "代码行/空行/注释行: " + str(ccounts['sloc']) + "/" + str(ccounts['blank']) + "/" + str(ccounts['comment']) + "\n"
 
     output = open(foutput, "w+")
     output.write(s)
@@ -134,33 +134,17 @@ def wc(fd, file_x, fstatus, current_pos, li):
     return ok
 
 def cc(fd):
-    comment = string = code = False
-    for l in fd.readlines():
-        l = l.strip().replace('{', '').replace('}', '').replace(';', '')
-        if not comment and not l:
+    lines = fd.readlines()
+    total = (len(lines) + 1) if lines[len(lines) - 1].endswith('\n') else len(lines)
+    for l in lines:
+        l = l.replace(' ', '').replace('\t','')
+        if l == '\n':
             ccounts['blank'] = ccounts['blank'] + 1
             continue
-        if l.replace('/', '').replace('*', ''):
-            ccounts['slot'] = ccounts['slot'] + 1
-        elif comment:
+        elif l.startswith('#'):
             ccounts['comment'] = ccounts['comment'] + 1
-        l = ' ' + l + ' '
-        for i in range(1, len(l)):
-            if l[i] == '"' and l[i - 1] != '\\':
-                string = not string
-            if not string:
-                if not comment and l[i] == '/' and l[i + 1] == '/':
-                    if not l[:i].split():
-                        ccounts['blank'] = ccounts['blank'] + 1
-                    ccounts['comment'] = ccounts['comment'] + 1
-                    break
-                if not comment and l[i] == '/' and l[i + 1] == '*':
-                    comment = True
-                    ccounts['comment'] = ccounts['comment'] + 1
-                    i = i + 1
-                if l[i] == '*' and l[i + 1] == '/':
-                    comment = False
-                    i = i + 1
+
+    ccounts['sloc'] = total - ccounts['blank'] - ccounts['comment']
 
 def wc_file(file, fstatus):
     if not file or file == "-":
