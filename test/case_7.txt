@@ -1,0 +1,22 @@
+def test():
+    begin()
+    writename = File(outputPath);
+    writename.createNewFile();
+    codeLine()
+
+    out = BufferedWriter(FileWriter(writename));
+    # noteLine
+    out.write(outputBuffer);
+
+# noteLine
+# noteLine
+#
+# noteLine
+# noteLine
+# noteLine
+    codeLine()
+    out.flush();
+    out.close();
+    end()
+for True:
+    break
