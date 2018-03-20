@@ -91,7 +91,7 @@ def write_counts(lines, words, chars, bytes, linelength, file, foutput, cc):
     if print_opt['print_chars']:
         s = s + file + ", " + "字符数: " + str(counts['total_chars']) + "\n"
     if print_opt['print_bytes']:
-        s = s + file + ", " + "字节数: " + str(counts['total_bytes']) + "\n"
+        s = s + file + ", " + "字符数: " + str(counts['total_bytes']) + "\n"
     if print_opt['print_linelength']:
         pass
     # if file:
@@ -128,7 +128,7 @@ def wc(fd, file_x, fstatus, current_pos, li):
     token_list = split(r"[\s,]+", string.strip())
     if li:
         token_list = list(filter(lambda t: not (t in li), token_list))
-    print(token_list)
+    # print(token_list)
     counts['total_words'] = len(token_list)
 
     return ok
@@ -185,7 +185,7 @@ def main():
         print(err)
         usage(dep.EXIT_FAILURE)
 
-    print(opts)
+    # print(opts)
     
     for opt, arg in opts:
         if opt in ("-c", "--bytes"):
