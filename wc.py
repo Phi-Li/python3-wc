@@ -79,25 +79,28 @@ def usage(status):
     
     exit(status)
 
-def write_counts(lines, words, chars, bytes, linelength, file):
+def write_counts(lines, words, chars, bytes, linelength, file, foutput, cc):
     format_sp_int = " %*s"
     format_int = 1
     s = ""
 
     if print_opt['print_lines']:
-        s = s + "Total lines: " + str(counts['total_lines']) + "\n"
+        s = s + file + ", " + "行数: " + str(counts['total_lines']) + "\n"
     if print_opt['print_words']:
-        s = s + "Total words: " + str(counts['total_words']) + "\n"
+        s = s + file + ", " + "单词数: " + str(counts['total_words']) + "\n"
     if print_opt['print_chars']:
-        s = s + "Total chars: " + str(counts['total_chars']) + "\n"
+        s = s + file + ", " + "字符数: " + str(counts['total_chars']) + "\n"
     if print_opt['print_bytes']:
-        s = s + "Total bytes: " + str(counts['total_bytes']) + "\n"
+        s = s + file + ", " + "字节数: " + str(counts['total_bytes']) + "\n"
     if print_opt['print_linelength']:
         pass
-    if file:
-        s = s + file
+    # if file:
+    #     s = s + file
 
-    output = open(file, "w+")
+    if cc:
+        s = s + file + ", " + "代码行/空行/注释行: " + str(ccounts['slot']) + "/" + str(ccounts['blank']) + "/" + str(ccounts['comment']) + "\n"
+
+    output = open(foutput, "w+")
     output.write(s)
     output.close()
 
@@ -246,7 +249,7 @@ def main():
         wc(fd, args[0], None, 0, stop_token_list)
         fd.close()
 
-    write_counts(None, None, None, None, None, output_file)
+    write_counts(None, None, None, None, None, args[0], output_file, count_c)
 
     read_tokens = False
 
