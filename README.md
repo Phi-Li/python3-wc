@@ -16,6 +16,8 @@ You can simply download it here:
 
 ## Test cases
 
+For Windows users, you can put `wc.exe` into `test` and then run `test.bat`. It will run the following tests automatically for you.
+
 1. Input:
 
         python3 wc.py -clw case_1.txt
