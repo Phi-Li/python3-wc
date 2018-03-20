@@ -124,12 +124,12 @@ def wc(fd, file_x, fstatus, current_pos, li):
     count_opt['count_complicated'] = print_opt['print_words'] or print_opt['print_linelength']
     string = fd.read()
     counts['total_bytes'] = len(string)
-    token_list = split(r"[\s,]+", string)
+    counts['total_lines'] = len(string.split('\n'))
+    token_list = split(r"[\s,]+", string.strip())
     if li:
         token_list = list(filter(lambda t: not (t in li), token_list))
     print(token_list)
     counts['total_words'] = len(token_list)
-    counts['total_lines'] = len(string.split('\n'))
 
     return ok
 
