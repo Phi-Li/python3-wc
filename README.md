@@ -8,9 +8,11 @@ As it is __NOT__ a good practice to commit large binary files directly to the re
 
 You can simply download it here:
 
-__你可以点此下载exe文件：__
+(__你可以点此下载exe文件：__)
 
 [wc.exe](https://github.com/Phi-Li/python3-wc/releases/download/v0.1/wc.exe)
+
+(__若以上链接因为那个大家都懂的原因无法访问，请__ [https://pan.baidu.com/s/1yBWb07SrkY1d9RFEi7UL2Q](https://pan.baidu.com/s/1yBWb07SrkY1d9RFEi7UL2Q))
 
 ## Test cases
 
